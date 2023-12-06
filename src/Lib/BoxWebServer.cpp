@@ -3,6 +3,7 @@
 BoxWebServer::BoxWebServer(SeaTalk *seaTalk)
 {
     _seaTalk = seaTalk;
+ 
     Serial.println("Settign Up WEb Server");
     webserver.on("/", HTTP_GET, [&](AsyncWebServerRequest *request)
                  {
@@ -30,3 +31,6 @@ BoxWebServer::BoxWebServer(SeaTalk *seaTalk)
     webserver.begin();
 }
 
+
+
+// Process Commands On Main Thread

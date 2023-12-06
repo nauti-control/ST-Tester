@@ -27,5 +27,5 @@ void setup()
 void loop()
 {
   _seaTalk->processMessages();
-  _boxWebServer->ProcessCommands();
+
 }

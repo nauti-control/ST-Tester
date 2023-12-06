@@ -1,2 +1,2 @@
 # NautiControl ST Tester
-Testing 
+Tester for Sea Talk devices and instruments

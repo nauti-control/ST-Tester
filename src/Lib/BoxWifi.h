@@ -15,7 +15,7 @@ private:
     IPAddress mainServerGatewayIP=IPAddress(192, 168, 1, 1);
     IPAddress mainServerIPMask=IPAddress(255, 255, 255, 0);
     // Replace with your network credentials
-    const char *ssid = "NAUTI-CONTROL-TEST";
+    const char *ssid = "NAUTI-CONTROL-TESTER";
     const char *password = "123456789";
 };
 #endif

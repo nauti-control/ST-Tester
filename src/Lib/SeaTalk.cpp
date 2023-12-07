@@ -46,10 +46,7 @@ int SeaTalk::checkBus()
                 Serial.printf("Apparent Wind Angle: %.1f degrees\n", apparentWindAngle);
               
                 
-            }
-            // Apparent Wind Speed
- 
-      
+            } 
         }
     }
 

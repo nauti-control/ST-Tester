@@ -7,13 +7,12 @@
 
 #include <SPIFFS.h>
 
-#include "SeaTalk.h"
 
 class BoxWebServer {
 
     public:
-      BoxWebServer(SeaTalk *seaTalk);
-      void ProcessCommands();
+      BoxWebServer();
+      
 
     private:
       SeaTalk *_seaTalk;

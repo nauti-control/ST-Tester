@@ -1,8 +1,8 @@
 #include "BoxWebServer.h"
 
-BoxWebServer::BoxWebServer(SeaTalk *seaTalk)
+BoxWebServer::BoxWebServer()
 {
-    _seaTalk = seaTalk;
+
  
     Serial.println("Settign Up WEb Server");
     webserver.on("/", HTTP_GET, [&](AsyncWebServerRequest *request)

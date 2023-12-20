@@ -20,8 +20,7 @@ void setup()
     return;
   }
   _boxWifi = new BoxWifi();
-  _seaTalk = new SeaTalk();
-  _boxWebServer = new BoxWebServer(_seaTalk);
+  _boxWebServer = new BoxWebServer();
 }
 
 void loop()

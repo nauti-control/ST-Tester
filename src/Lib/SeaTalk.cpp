@@ -1,13 +1,17 @@
 
 #include "SeaTalk.h"
 
-
 /// @brief Seatalk class constructor
 /// @param signalManager Signal manager to send messages to other systems
 SeaTalk::SeaTalk()
 {
     _mySerial.begin(4800, SWSERIAL_8S1, RX_IN, TX_OUT, true, 95, 11);
-   
+}
+
+void SeaTalk::onTestEcho(TestNumberHandler handler, void *arg)
+{
+    _handlerTNH = handler;
+    _argTNH = arg;
 }
 
 /// @brief Method to run messages
@@ -38,36 +42,21 @@ int SeaTalk::checkBus()
             message.push_back(inByte);
 
             // Process messages
-            // Apparent Wind Angle
-            if (message[0] == 0x10 && message.size() == 4)
+            // Echo Message Received Check to ensure it's the response signified by second byte.
+            if (message[0] == 0xAC && message.size() == 4)
             {
-                double apparentWindAngle = ((message[2] << 8) | (message[3])) / 2.0;
-
-                Serial.printf("Apparent Wind Angle: %.1f degrees\n", apparentWindAngle);
-              
-                
-            } 
+                // Check Mode
+                if (message[1] == 0x01)
+                {
+                    u_int8_t testNum = message[3];
+                    _handlerTNH(_argTNH, testNum);
+                }
+            }
         }
     }
 
     return -1;
 }
-
-
-
-// Send compass heading to Seatalk
-void SeaTalk::sendCompass(float heading)
-{
-    uint16_t headingTenths = heading * 10; // Convert to tenths of a degree
-    uint8_t message[] = {
-        0x9C,                            // Compass heading message code
-        0x02,                            // Data length
-        (uint8_t)(headingTenths & 0xFF), // Low byte
-        (uint8_t)(headingTenths >> 8)    // High byte
-    };
-    send2ST(message, sizeof(message));
-}
-
 
 /// @brief Send to seatalk Bus
 /// @param cmd cmd

@@ -14,9 +14,7 @@ class BoxWebServer {
       BoxWebServer();
       
 
-    private:
-      SeaTalk *_seaTalk;
-      
+    private:   
       AsyncWebServer webserver = AsyncWebServer(80);
   
 

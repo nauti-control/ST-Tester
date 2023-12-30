@@ -7,23 +7,12 @@ TestEngine::TestEngine()
     _seaTalk->onTestEcho(&handleTestEcho, this);
 }
 
-void TestEngine::startTest()
+void TestEngine::sendWindData(int windSpeed, int windAngle)
 {
-    _lastTestNum = -1;
-    _currentTest = 0;
-    _testComplete = false;
-    _testPassed = false;
 }
 
-void TestEngine::runNextTest()
+void TestEngine::sendSpeedData(int speedThroughWater)
 {
-
-    // Send 10
-    if (_currentTest < 10)
-    {
-        uint8_t testNum = random(256);
-        sendTestEcho(testNum);
-    }
 }
 
 void TestEngine::sendTestEcho(uint8_t testNumber)
@@ -44,8 +33,4 @@ void TestEngine::handleTestEcho(void *arg, uint8_t testNumber)
 {
     TestEngine *engine = static_cast<TestEngine *>(arg);
     engine->checkEchoReply(testNumber);
-}
-
-void TestEngine::processUpdate()
-{
 }

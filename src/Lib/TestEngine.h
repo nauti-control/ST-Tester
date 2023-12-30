@@ -7,8 +7,11 @@ class TestEngine
 {
 public:
   TestEngine();
-  void startTest();
   void processUpdate();
+  void sendTestEcho(uint8_t testNumber);
+  void sendWindData(int windSpeed,int windAngle);
+  void sendSpeedData(int speedThroughWater);
+  
 
 private:
   SeaTalk *_seaTalk;

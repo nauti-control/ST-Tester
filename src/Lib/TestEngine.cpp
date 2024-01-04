@@ -18,13 +18,22 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
     // Ship it out.
     _seaTalk->send2ST(stcmd, 4);
 
-
     // Wind speed in knots
-    u_int8_t x1 = left;
+    u_int8_t x2 = windSpeed;
 
-    u_int8_t y1 = 
+    // Ensure only using 7 bits. keep 8th bit clear to signify knots.
+    if (x2 > 127)
+    {
+        x2 == 127;
+    }
 
+    // Fractions would be stored here but dropping
+    u_int8_t y2 = 0x00;
 
+    // Pack it up
+    uint8_t stcmd[4] = {0x11, 0x01, x2, y2};
+    // Ship it out.
+    _seaTalk->send2ST(stcmd, 4);
 }
 
 void TestEngine::sendSpeedThroughWater(float speedThroughWater)

@@ -4,33 +4,49 @@ TestEngine::TestEngine()
 {
 
     _seaTalk = new SeaTalk();
-    _seaTalk->onTestEcho(&handleTestEcho, this);
 }
 
-void TestEngine::sendWindData(int windSpeed, int windAngle)
+void TestEngine::sendApparentWind(float windSpeed, float windAngle)
 {
+    // Wind Angle
+    u_int16_t angle = windAngle * 2;
+    u_int8_t x1 = (0xFF00 & angle) >> 4;
+    u_int8_t y2 = 0x00FF & angle;
+
+    // Pack it up
+    uint8_t stcmd[4] = {0x10, 0x01, x1, y2};
+    // Ship it out.
+    _seaTalk->send2ST(stcmd, 4);
+
+
+    // Wind speed in knots
+    u_int8_t x1 = left;
+
+    u_int8_t y1 = 
+
+
 }
 
-void TestEngine::sendSpeedData(int speedThroughWater)
+void TestEngine::sendSpeedThroughWater(float speedThroughWater)
 {
+    u_int16_t stw = speedThroughWater * 10;
+    u_int8_t x1 = (0xFF00 & stw) >> 4;
+    u_int8_t x2 = 0x00FF & stw;
+
+    // Pack it up
+    uint8_t stcmd[4] = {0x20, 0x01, x1, x2};
+    // Ship it out.
+    _seaTalk->send2ST(stcmd, 4);
 }
 
-void TestEngine::sendTestEcho(uint8_t testNumber)
+void TestEngine::sendSpeedOverGround(float speedOverGround)
 {
-    _lastTestNum = testNumber;
-    uint8_t message[] = {0xAC, 0x00, 0x00, testNumber};
-    _seaTalk->send2ST(message, 4);
-}
+    u_int16_t sog = speedOverGround * 10;
+    u_int8_t x1 = (0xFF00 & sog) >> 4;
+    u_int8_t x2 = 0x00FF & sog;
 
-void TestEngine::checkEchoReply(uint8_t testNumber)
-{
-    if (testNumber == _lastTestNum)
-    {
-    }
-}
-
-void TestEngine::handleTestEcho(void *arg, uint8_t testNumber)
-{
-    TestEngine *engine = static_cast<TestEngine *>(arg);
-    engine->checkEchoReply(testNumber);
+    // Pack it up
+    uint8_t stcmd[4] = {0x20, 0x01, x1, x2};
+    // Ship it out.
+    _seaTalk->send2ST(stcmd, 4);
 }

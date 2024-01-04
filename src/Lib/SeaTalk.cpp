@@ -8,11 +8,7 @@ SeaTalk::SeaTalk()
     _mySerial.begin(4800, SWSERIAL_8S1, RX_IN, TX_OUT, true, 95, 11);
 }
 
-void SeaTalk::onTestEcho(TestNumberHandler handler, void *arg)
-{
-    _handlerTNH = handler;
-    _argTNH = arg;
-}
+
 
 /// @brief Method to run messages
 void SeaTalk::processMessages()
@@ -48,8 +44,8 @@ int SeaTalk::checkBus()
                 // Check Mode
                 if (message[1] == 0x01)
                 {
-                    u_int8_t testNum = message[3];
-                    _handlerTNH(_argTNH, testNum);
+                  
+            
                 }
             }
         }

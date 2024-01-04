@@ -25,12 +25,10 @@ public:
     const uint8_t ST_TimerStart[5] = {0x59, 0x22, 0x00, 0x05, 0x80};
     void processMessages();
     bool send2ST(const uint8_t cmd[], int bytes);
-    void onTestEcho(TestNumberHandler handler, void *arg);
+
 
 private:
     SoftwareSerial _mySerial;
-    TestNumberHandler _handlerTNH;
-    void *_argTNH;
     int checkBus();
     void checkClearToWrite();
 };

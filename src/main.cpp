@@ -4,10 +4,14 @@
 #include "Lib\BoxWebServer.h"
 #include <SPIFFS.h>
 #include <Wire.h>
+#include "Lib\Models\MockData.h"
+#include "Lib\TestEngine.h"
 
 SeaTalk *_seaTalk = nullptr;
 BoxWifi *_boxWifi = nullptr;
 BoxWebServer *_boxWebServer = nullptr;
+MockData *_mockData = nullptr;
+TestEngine *_testEngine = nullptr;
 
 void setup()
 {
@@ -19,12 +23,19 @@ void setup()
     Serial.println("An Error has occurred while mounting SPIFFS");
     return;
   }
+  _mockData = new MockData();
+  _mockData->awa = 0;
+  _mockData->aws = 0;
+  _mockData->dpt = 0;
+  _mockData->stw = 0;
   _boxWifi = new BoxWifi();
-  _boxWebServer = new BoxWebServer();
+  _boxWebServer = new BoxWebServer(_mockData);
+  _seaTalk = new SeaTalk();
+  _testEngine = new TestEngine(_mockData, _seaTalk);
 }
 
 void loop()
 {
   _seaTalk->processMessages();
-
+  _testEngine->processTest();
 }

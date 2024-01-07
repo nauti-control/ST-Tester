@@ -1,24 +1,59 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>NautiControl Seatalk</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
   <header>
     <nav>
       <a href="\index.html" class="active">Home</a>
-      <a href="\setup.html">Setup</a>
-      <a href="\diplay.html" class="active">Display</a>
-     
+
     </nav>
-    <h1>NautiControl Seatalk</h1>
+    <h1>NautiControl Seatalk Tester</h1>
   </header>
   <main>
- 
+    <div id="settestdatadiv" class="form-container">
+      <form id="settestdataform" action="\SetTestData.html" method="post" onsubmit="PostDeviceOptions();return false;">
+        <h2>Simulator Test Data</h2>
+        <div>
+          <label for="stwInput">Speed Through Water:</label>
+          <input type="number" id="stwInput" name="stwInput" step="0.5" min="0" value="0"/>
+        </div>
+        <div>
+          <label for="awaInput">Apparent Wind Angle:</label>
+          <input type="number" id="awaInput" name="awaInput" step="0.5" min="0" value="0"/>
+
+
+
+        </div>
+        <div>
+          <label for="awsInput">Apparent Wind Speed:</label>
+          <input type="number" id="awsInput" name="awsInput" step="0.5" min="0" value="0"/>
+
+        </div>
+
+        <div>
+          <label for="dptInput">Depth:</label>
+          <input type="number" id="dptInput" name="dptInput" step="0.5" min="0" value="0"/>
+
+        </div>
+
+        <input type="submit" value="Send Update">
+
+      </form>
+    </div>
+
+    <div id="savingdiv" class="message-container" style="visibility: collapse;color: red;" id="savingdiv">
+      <p>Update Sent To Device.</p>
+    </div>
   </main>
   <script src="jquery-3.6.3.min.js"></script>
+  <script src="nauticontrol.js"></script>
 </body>
+
 </html>

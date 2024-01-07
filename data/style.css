@@ -76,7 +76,7 @@ body {
   }
   
   .form-container {
-    visibility: collapse;
+    visibility:  visible;
   }
   
   .message-container {

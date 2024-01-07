@@ -13,6 +13,7 @@ void TestEngine::processTest()
     {
         sendApparentWind(_mockData->aws, _mockData->awa);
         sendSpeedThroughWater(_mockData->stw);
+        sendSpeedOverGround(_mockData->sog);
         sendDepth(_mockData->dpt);
         _lastRun = millis();
         Serial.println("Test Run Processed");
@@ -88,6 +89,8 @@ void TestEngine::sendSpeedThroughWater(float speedThroughWater)
 
 void TestEngine::sendSpeedOverGround(float speedOverGround)
 {
+    Serial.println("Speed Over Ground=");
+    Serial.println(speedOverGround);
     u_int16_t sog = speedOverGround * 10;
     u_int8_t x1 = (0xFF00 & sog) >> 4;
     u_int8_t x2 = 0x00FF & sog;

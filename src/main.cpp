@@ -28,6 +28,7 @@ void setup()
   _mockData->aws = 0;
   _mockData->dpt = 0;
   _mockData->stw = 0;
+  _mockData->sog = 0;
   _boxWifi = new BoxWifi();
   _boxWebServer = new BoxWebServer(_mockData);
   _seaTalk = new SeaTalk();

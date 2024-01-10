@@ -37,17 +37,7 @@ int SeaTalk::checkBus()
         {
             message.push_back(inByte);
 
-            // Process messages
-            // Echo Message Received Check to ensure it's the response signified by second byte.
-            if (message[0] == 0xAC && message.size() == 4)
-            {
-                // Check Mode
-                if (message[1] == 0x01)
-                {
-                  
-            
-                }
-            }
+           
         }
     }
 

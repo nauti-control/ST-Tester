@@ -25,12 +25,16 @@ void TestEngine::sendDepth(float depth)
     Serial.println("Depth=");
     Serial.println(depth);
     u_int16_t dpt = depth * 10;
-    u_int8_t x1 = (0xFF00 & dpt) >> 4;
+    u_int8_t x1 = (0xFF00 & dpt) >> 8;
+    Serial.println(x1);
     u_int8_t x2 = 0x00FF & dpt;
-    u_int8_t y1 = 4 << 4 & 0xFF00;
+    Serial.println(x2);
+    u_int8_t y1 = 4 << 4 & 0xff00;
+    Serial.println(y1);
+    // Showing 256 Feet
 
     // Pack it up
-    uint8_t stcmd[5] = {0x00, 0x02, y1, x1, x2};
+    uint8_t stcmd[5] = {0x00, 0x02, 0x00, x2, x1};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 5);
     Serial.println("Depth Sent TO ST");
@@ -74,14 +78,16 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
 void TestEngine::sendSpeedThroughWater(float speedThroughWater)
 {
     Serial.println("Speed Through Water=");
-    Serial.println(speedThroughWater);
 
     u_int16_t stw = speedThroughWater * 10;
-    u_int8_t x1 = (0xFF00 & stw) >> 4;
+    Serial.println(stw);
+    u_int8_t x1 = (0xFF00 & stw) >> 8;
+    Serial.println(x1);
     u_int8_t x2 = 0x00FF & stw;
+    Serial.println(x2);
 
     // Pack it up
-    uint8_t stcmd[4] = {0x20, 0x01, x1, x2};
+    uint8_t stcmd[4] = {0x20, 0x01, x2,x1};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 4);
     Serial.println("Speed Through Water Sent");
@@ -92,11 +98,13 @@ void TestEngine::sendSpeedOverGround(float speedOverGround)
     Serial.println("Speed Over Ground=");
     Serial.println(speedOverGround);
     u_int16_t sog = speedOverGround * 10;
-    u_int8_t x1 = (0xFF00 & sog) >> 4;
+    u_int8_t x1 = (0xFF00 & sog) >> 8;
     u_int8_t x2 = 0x00FF & sog;
 
     // Pack it up
-    uint8_t stcmd[4] = {0x20, 0x01, x1, x2};
+    uint8_t stcmd[4] = {0x52, 0x01, x2, x1};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 4);
+
+    
 }

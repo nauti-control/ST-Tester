@@ -48,7 +48,7 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
     Serial.println(windAngle);
     // Wind Angle
     u_int16_t angle = windAngle * 2;
-    u_int8_t x1 = (0xFF00 & angle) >> 4;
+    u_int8_t x1 = (0xFF00 & angle) >> 8;
     u_int8_t y1 = 0x00FF & angle;
 
     // Pack it up
@@ -66,7 +66,8 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
     }
 
     // Fractions would be stored here but dropping
-    u_int8_t y2 = 0x00;
+     // One Decimal place 
+    u_int8_t y2 = (windSpeed - static_cast<int>(windSpeed) * 10);
 
     // Pack it up
     uint8_t stcmd2[4] = {0x11, 0x01, x2, y2};

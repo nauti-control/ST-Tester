@@ -12,8 +12,11 @@ void TestEngine::processTest()
     if (millis() > _lastRun + 1000)
     {
         sendApparentWind(_mockData->aws, _mockData->awa);
+        delay(random(2, 50));
         sendSpeedThroughWater(_mockData->stw);
+        delay(random(2, 50));
         sendSpeedOverGround(_mockData->sog);
+        delay(random(2, 50));
         sendDepth(_mockData->dpt);
         _lastRun = millis();
         Serial.println("Test Run Processed");
@@ -55,7 +58,7 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
     uint8_t stcmd[4] = {0x10, 0x01, x1, y1};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 4);
-
+    delay(random(2, 50));
     // Wind speed in knots
     u_int8_t x2 = windSpeed;
 
@@ -66,7 +69,7 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
     }
 
     // Fractions would be stored here but dropping
-     // One Decimal place 
+    // One Decimal place
     u_int8_t y2 = (windSpeed - static_cast<int>(windSpeed) * 10);
 
     // Pack it up
@@ -79,16 +82,17 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
 void TestEngine::sendSpeedThroughWater(float speedThroughWater)
 {
     Serial.println("Speed Through Water=");
-
+    Serial.println(speedThroughWater);
+    
     u_int16_t stw = speedThroughWater * 10;
-    Serial.println(stw);
+
     u_int8_t x1 = (0xFF00 & stw) >> 8;
     Serial.println(x1);
     u_int8_t x2 = 0x00FF & stw;
     Serial.println(x2);
 
     // Pack it up
-    uint8_t stcmd[4] = {0x20, 0x01, x2,x1};
+    uint8_t stcmd[4] = {0x20, 0x01, x2, x1};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 4);
     Serial.println("Speed Through Water Sent");
@@ -106,6 +110,4 @@ void TestEngine::sendSpeedOverGround(float speedOverGround)
     uint8_t stcmd[4] = {0x52, 0x01, x2, x1};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 4);
-
-    
 }

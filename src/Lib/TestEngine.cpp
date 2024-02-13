@@ -70,20 +70,20 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
 
     // Fractions would be stored here but dropping
     // One Decimal place
-    u_int8_t y2 = (windSpeed - static_cast<int>(windSpeed) * 10);
-
-    // Pack it up
-    uint8_t stcmd2[4] = {0x11, 0x01, x2, y2};
-    // Ship it out.
-    _seaTalk->send2ST(stcmd2, 4);
-    Serial.println("Wind Sent TO ST");
+     u_int8_t y2 = (windSpeed*10 ) - (static_cast<int>(windSpeed) * 10);
+     // u_int8_t y2 = 0;
+     //  Pack it up
+     uint8_t stcmd2[4] = {0x11, 0x01, x2, y2};
+     // Ship it out.
+     _seaTalk->send2ST(stcmd2, 4);
+     Serial.println("Wind Sent TO ST");
 }
 
 void TestEngine::sendSpeedThroughWater(float speedThroughWater)
 {
     Serial.println("Speed Through Water=");
     Serial.println(speedThroughWater);
-    
+
     u_int16_t stw = speedThroughWater * 10;
 
     u_int8_t x1 = (0xFF00 & stw) >> 8;

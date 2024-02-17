@@ -70,13 +70,13 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
 
     // Fractions would be stored here but dropping
     // One Decimal place
-     u_int8_t y2 = (windSpeed*10 ) - (static_cast<int>(windSpeed) * 10);
-     // u_int8_t y2 = 0;
-     //  Pack it up
-     uint8_t stcmd2[4] = {0x11, 0x01, x2, y2};
-     // Ship it out.
-     _seaTalk->send2ST(stcmd2, 4);
-     Serial.println("Wind Sent TO ST");
+    u_int8_t y2 = (windSpeed * 10) - (static_cast<int>(windSpeed) * 10);
+    // u_int8_t y2 = 0;
+    //  Pack it up
+    uint8_t stcmd2[4] = {0x11, 0x01, x2, y2};
+    // Ship it out.
+    _seaTalk->send2ST(stcmd2, 4);
+    Serial.println("Wind Sent TO ST");
 }
 
 void TestEngine::sendSpeedThroughWater(float speedThroughWater)
@@ -110,4 +110,23 @@ void TestEngine::sendSpeedOverGround(float speedOverGround)
     uint8_t stcmd[4] = {0x52, 0x01, x2, x1};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 4);
+}
+
+void TestEngine::sendHeading(int heading)
+{
+        // 90 Degree segment to be held in 2 bits
+    u_int8_t segment = heading / 90;
+    // These six bits hold the 90 degrees in between in alternating degrees up to 45
+    u_int8_t segmentDegree = (heading % 90) / 2;
+    // Either 1/0 weirdly by the docs it sets two bits will play about with this as it seems mixed up over the various degreee
+    u_int8_t oddDegree = ((heading % 90) % 2) == 1 ? 2 : 0;
+
+    // Shift it All Across
+    u_int8_t u2 = (((((oddDegree << 2) & 0x3) | segment) << 4) & 0xf) | 0x2;
+    // Mask off first 2 bits
+    u_int8_t vw = segmentDegree & 0x3f;
+    // Pack it up 
+    uint8_t stcmd[5] = {0x89, u2, vw, 0x00, 0x00};
+    // Ship it out.
+    _seaTalk->send2ST(stcmd, 5);
 }

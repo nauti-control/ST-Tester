@@ -7,6 +7,7 @@ struct MockData
     float awa;
     float aws;
     float dpt;
+    float hdg;
 };
 
 #endif

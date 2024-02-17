@@ -13,6 +13,7 @@ public:
   void sendSpeedThroughWater(float speedThroughWater);
   void sendSpeedOverGround(float speedOverGround);
   void sendDepth(float depth);
+  void sendHeading(int heading);
   void processTest();
 
 private:

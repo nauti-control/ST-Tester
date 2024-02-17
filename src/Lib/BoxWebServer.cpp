@@ -77,6 +77,14 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
         Serial.println("sog=");
         Serial.println(_mockData->sog);
     }
+
+    if (request->hasParam("hdgInput", true))
+    {
+        AsyncWebParameter *p = request->getParam("hdgInput", true);
+        _mockData->sog = p->value().toFloat();
+        Serial.println("hdg=");
+        Serial.println(_mockData->hdg);
+    }
     Serial.println("Test Data Set");
     request->send(200);
 }

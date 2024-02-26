@@ -2,12 +2,13 @@
 #define MOCKDATA_H
 struct MockData
 {
-    float stw;
-    float sog;
-    float awa;
-    float aws;
-    float dpt;
-    float hdg;
+    double stw;
+    double sog;
+    double awa;
+    double aws;
+    double dpt;
+    double hdg;
+    double cog;
 };
 
 #endif

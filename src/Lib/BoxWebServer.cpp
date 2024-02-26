@@ -41,7 +41,7 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
     if (request->hasParam("stwInput", true))
     {
         AsyncWebParameter *p = request->getParam("stwInput", true);
-        _mockData->stw = p->value().toFloat();
+        _mockData->stw = p->value().toDouble();
         Serial.println("stw=");
         Serial.println(_mockData->stw);
     }
@@ -49,7 +49,7 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
     if (request->hasParam("awaInput", true))
     {
         AsyncWebParameter *p = request->getParam("awaInput", true);
-        _mockData->awa = p->value().toFloat();
+        _mockData->awa = p->value().toDouble();
         Serial.println("awa=");
         Serial.println(_mockData->awa);
     }
@@ -57,7 +57,7 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
     if (request->hasParam("awsInput", true))
     {
         AsyncWebParameter *p = request->getParam("awsInput", true);
-        _mockData->aws = p->value().toFloat();
+        _mockData->aws = p->value().toDouble();
         Serial.println("aws=");
         Serial.println(_mockData->aws);
     }
@@ -65,7 +65,7 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
     if (request->hasParam("dptInput", true))
     {
         AsyncWebParameter *p = request->getParam("dptInput", true);
-        _mockData->dpt = p->value().toFloat();
+        _mockData->dpt = p->value().toDouble();
         Serial.println("dpt=");
         Serial.println(_mockData->dpt);
     }
@@ -73,7 +73,7 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
     if (request->hasParam("sogInput", true))
     {
         AsyncWebParameter *p = request->getParam("sogInput", true);
-        _mockData->sog = p->value().toFloat();
+        _mockData->sog = p->value().toDouble();
         Serial.println("sog=");
         Serial.println(_mockData->sog);
     }
@@ -81,9 +81,17 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
     if (request->hasParam("hdgInput", true))
     {
         AsyncWebParameter *p = request->getParam("hdgInput", true);
-        _mockData->sog = p->value().toFloat();
+        _mockData->sog = p->value().toDouble();
         Serial.println("hdg=");
         Serial.println(_mockData->hdg);
+    }
+
+    if (request->hasParam("cogInput", true))
+    {
+        AsyncWebParameter *p = request->getParam("cogInput", true);
+        _mockData->sog = p->value().toDouble();
+        Serial.println("cog=");
+        Serial.println(_mockData->cog);
     }
     Serial.println("Test Data Set");
     request->send(200);

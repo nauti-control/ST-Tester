@@ -23,6 +23,8 @@ void TestEngine::processTest()
     }
 }
 
+/// @brief Send Depth
+/// @param depth
 void TestEngine::sendDepth(float depth)
 {
     Serial.println("Depth=");
@@ -43,6 +45,9 @@ void TestEngine::sendDepth(float depth)
     Serial.println("Depth Sent TO ST");
 }
 
+/// @brief send apparent wind
+/// @param windSpeed
+/// @param windAngle
 void TestEngine::sendApparentWind(float windSpeed, float windAngle)
 {
     Serial.println("Wind Speed=");
@@ -79,6 +84,8 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
     Serial.println("Wind Sent TO ST");
 }
 
+/// @brief Send speed through water
+/// @param speedThroughWater
 void TestEngine::sendSpeedThroughWater(float speedThroughWater)
 {
     Serial.println("Speed Through Water=");
@@ -98,6 +105,8 @@ void TestEngine::sendSpeedThroughWater(float speedThroughWater)
     Serial.println("Speed Through Water Sent");
 }
 
+/// @brief Send SOG
+/// @param speedOverGround
 void TestEngine::sendSpeedOverGround(float speedOverGround)
 {
     Serial.println("Speed Over Ground=");
@@ -112,9 +121,11 @@ void TestEngine::sendSpeedOverGround(float speedOverGround)
     _seaTalk->send2ST(stcmd, 4);
 }
 
+/// @brief send Heading HDG
+/// @param heading
 void TestEngine::sendHeading(int heading)
 {
-        // 90 Degree segment to be held in 2 bits
+    // 90 Degree segment to be held in 2 bits
     u_int8_t segment = heading / 90;
     // These six bits hold the 90 degrees in between in alternating degrees up to 45
     u_int8_t segmentDegree = (heading % 90) / 2;
@@ -125,8 +136,32 @@ void TestEngine::sendHeading(int heading)
     u_int8_t u2 = (((((oddDegree << 2) & 0x3) | segment) << 4) & 0xf) | 0x2;
     // Mask off first 2 bits
     u_int8_t vw = segmentDegree & 0x3f;
-    // Pack it up 
+    // Pack it up
     uint8_t stcmd[5] = {0x89, u2, vw, 0x00, 0x00};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 5);
+}
+
+/// @brief Send Course over ground
+/// @param courseoverground
+void TestEngine::sendCourseOverGround(double courseOverGround)
+{
+    Serial.println(courseOverGround);
+    u_int16_t cog = courseOverGround;
+    // 90 Degree segment to be held in 2 bits
+    u_int8_t segment = cog / 90;
+    // These six bits hold the 90 degrees in between in alternating degrees up to 45
+    u_int8_t segmentDegree = (cog % 90) / 2;
+    // Either 1/0 weirdly by the docs it sets two bits will play about with this as it seems mixed up over the various degreee
+    u_int8_t oddDegree = ((cog % 90) % 2) == 1 ? 2 : 0;
+
+    // Shift it All Across
+    u_int8_t u0 = (((((oddDegree << 2) & 0x3) | segment) << 4) & 0xf);
+    // Mask off first 2 bits
+    u_int8_t vw = segmentDegree & 0x3f;
+    // Pack it up
+    uint8_t stcmd[5] = {0x53, u0, vw};
+    // Ship it out.
+    _seaTalk->send2ST(stcmd, 5);
+ 
 }

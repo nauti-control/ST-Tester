@@ -14,6 +14,7 @@ public:
   void sendSpeedOverGround(float speedOverGround);
   void sendDepth(float depth);
   void sendHeading(int heading);
+  void sendCourseOverGround(double courseOverGround);
   void processTest();
 
 private:

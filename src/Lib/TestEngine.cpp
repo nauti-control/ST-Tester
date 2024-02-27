@@ -9,7 +9,7 @@ TestEngine::TestEngine(MockData *mockData, SeaTalk *seatalk)
 
 void TestEngine::processTest()
 {
-    if (millis() > _lastRun + 1000)
+    if (millis() > _lastRun + 500)
     {
         sendApparentWind(_mockData->aws, _mockData->awa);
         delay(random(2, 50));
@@ -18,6 +18,11 @@ void TestEngine::processTest()
         sendSpeedOverGround(_mockData->sog);
         delay(random(2, 50));
         sendDepth(_mockData->dpt);
+        delay(random(2, 50));
+        sendHeading(_mockData->hdg);
+        delay(random(2, 50));
+        sendCourseOverGround(_mockData->cog);
+
         _lastRun = millis();
         Serial.println("Test Run Processed");
     }
@@ -25,7 +30,7 @@ void TestEngine::processTest()
 
 /// @brief Send Depth
 /// @param depth
-void TestEngine::sendDepth(float depth)
+void TestEngine::sendDepth(double depth)
 {
     Serial.println("Depth=");
     Serial.println(depth);
@@ -48,7 +53,7 @@ void TestEngine::sendDepth(float depth)
 /// @brief send apparent wind
 /// @param windSpeed
 /// @param windAngle
-void TestEngine::sendApparentWind(float windSpeed, float windAngle)
+void TestEngine::sendApparentWind(double windSpeed, double windAngle)
 {
     Serial.println("Wind Speed=");
     Serial.println(windSpeed);
@@ -86,7 +91,7 @@ void TestEngine::sendApparentWind(float windSpeed, float windAngle)
 
 /// @brief Send speed through water
 /// @param speedThroughWater
-void TestEngine::sendSpeedThroughWater(float speedThroughWater)
+void TestEngine::sendSpeedThroughWater(double speedThroughWater)
 {
     Serial.println("Speed Through Water=");
     Serial.println(speedThroughWater);
@@ -107,7 +112,7 @@ void TestEngine::sendSpeedThroughWater(float speedThroughWater)
 
 /// @brief Send SOG
 /// @param speedOverGround
-void TestEngine::sendSpeedOverGround(float speedOverGround)
+void TestEngine::sendSpeedOverGround(double speedOverGround)
 {
     Serial.println("Speed Over Ground=");
     Serial.println(speedOverGround);
@@ -123,14 +128,17 @@ void TestEngine::sendSpeedOverGround(float speedOverGround)
 
 /// @brief send Heading HDG
 /// @param heading
-void TestEngine::sendHeading(int heading)
+void TestEngine::sendHeading(double heading)
 {
+    Serial.println("Heading=");
+    Serial.println(heading);
+    u_int16_t hdg = heading;
     // 90 Degree segment to be held in 2 bits
     u_int8_t segment = heading / 90;
     // These six bits hold the 90 degrees in between in alternating degrees up to 45
-    u_int8_t segmentDegree = (heading % 90) / 2;
+    u_int8_t segmentDegree = (hdg % 90) / 2;
     // Either 1/0 weirdly by the docs it sets two bits will play about with this as it seems mixed up over the various degreee
-    u_int8_t oddDegree = ((heading % 90) % 2) == 1 ? 2 : 0;
+    u_int8_t oddDegree = ((hdg % 90) % 2) == 1 ? 2 : 0;
 
     // Shift it All Across
     u_int8_t u2 = (((((oddDegree << 2) & 0x3) | segment) << 4) & 0xf) | 0x2;
@@ -146,6 +154,7 @@ void TestEngine::sendHeading(int heading)
 /// @param courseoverground
 void TestEngine::sendCourseOverGround(double courseOverGround)
 {
+    Serial.println("COG=");
     Serial.println(courseOverGround);
     u_int16_t cog = courseOverGround;
     // 90 Degree segment to be held in 2 bits
@@ -163,5 +172,4 @@ void TestEngine::sendCourseOverGround(double courseOverGround)
     uint8_t stcmd[5] = {0x53, u0, vw};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 5);
- 
 }

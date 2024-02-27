@@ -81,7 +81,7 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
     if (request->hasParam("hdgInput", true))
     {
         AsyncWebParameter *p = request->getParam("hdgInput", true);
-        _mockData->sog = p->value().toDouble();
+        _mockData->hdg = p->value().toDouble();
         Serial.println("hdg=");
         Serial.println(_mockData->hdg);
     }
@@ -89,7 +89,7 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
     if (request->hasParam("cogInput", true))
     {
         AsyncWebParameter *p = request->getParam("cogInput", true);
-        _mockData->sog = p->value().toDouble();
+        _mockData->cog = p->value().toDouble();
         Serial.println("cog=");
         Serial.println(_mockData->cog);
     }

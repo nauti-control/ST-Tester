@@ -9,11 +9,11 @@ class TestEngine
 public:
   TestEngine(MockData *_mockData,SeaTalk *seatalk);
 
-  void sendApparentWind(float windSpeed, float windAngle);
-  void sendSpeedThroughWater(float speedThroughWater);
-  void sendSpeedOverGround(float speedOverGround);
-  void sendDepth(float depth);
-  void sendHeading(int heading);
+  void sendApparentWind(double windSpeed, double windAngle);
+  void sendSpeedThroughWater(double speedThroughWater);
+  void sendSpeedOverGround(double speedOverGround);
+  void sendDepth(double depth);
+  void sendHeading(double heading);
   void sendCourseOverGround(double courseOverGround);
   void processTest();
 

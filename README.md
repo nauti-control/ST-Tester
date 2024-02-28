@@ -21,9 +21,9 @@ Just re-using my existing pcb design as it had all the seatalk interface stuff a
 # Compatibility
 
 So far i've tested with the following instruments
-ST60 Depth Instrument
-ST60 Speed Insturment
-ST60 Tri-Data Insturment
-ST60 Wind Insturment
-C70 Chart Plotter
+ST60 Depth Instrument <br/>
+ST60 Speed Insturment <br/>
+ST60 Tri-Data Insturment <br/>
+ST60 Wind Insturment <br/>
+C70 Chart Plotter <br/>
 

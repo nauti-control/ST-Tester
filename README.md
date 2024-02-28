@@ -1,6 +1,6 @@
 # NautiControl ST Tester
 Tester for Sea Talk devices and instruments . This is an alternative firmware to the main ST Wireless V1 Firmware . This is used to test and simulate seatalk data using the existing ST Wireless V1 board design details of building / buying can be found over on the main repo https://github.com/nauti-control/STWirelessRemote . 
-<br/>
+
 You can purchase a premade box in our shop https://nauti-control.com/product/st-wireless-controller-fully-built-with-4-button-remote/ .
 
 I use this for testing functionality within the ST Wireless Remote however others may find it useful.

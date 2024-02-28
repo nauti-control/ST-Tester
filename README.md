@@ -25,4 +25,5 @@ ST60 Depth Instrument
 ST60 Speed Insturment
 ST60 Tri-Data Insturment
 ST60 Wind Insturment
+C70 Chart Plotter
 

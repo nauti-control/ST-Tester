@@ -93,6 +93,52 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
         Serial.println("cog=");
         Serial.println(_mockData->cog);
     }
+
+    if (request->hasParam("latdegInput", true))
+    {
+        AsyncWebParameter *p = request->getParam("latdegInput", true);
+        _mockData->latdeg = p->value().toDouble();
+        Serial.println("laddeg=");
+        Serial.println(_mockData->latdeg);
+    }
+    if (request->hasParam("latminInput", true))
+    {
+        AsyncWebParameter *p = request->getParam("latminInput", true);
+        _mockData->latmin = p->value().toDouble();
+        Serial.println("laatmin=");
+        Serial.println(_mockData->latmin);
+    }
+    if (request->hasParam("latnorthInput", true))
+    {
+        AsyncWebParameter *p = request->getParam("latnorthInput", true);
+        if (p->value().compareTo("y"))
+        {
+            _mockData->isNorth = true;
+        }
+    }
+
+    if (request->hasParam("londegInput", true))
+    {
+        AsyncWebParameter *p = request->getParam("londegInput", true);
+        _mockData->londeg = p->value().toDouble();
+        Serial.println("londeg=");
+        Serial.println(_mockData->londeg);
+    }
+    if (request->hasParam("lonminInput", true))
+    {
+        AsyncWebParameter *p = request->getParam("lonminInput", true);
+        _mockData->lonmin = p->value().toDouble();
+        Serial.println("lonmin=");
+        Serial.println(_mockData->lonmin);
+    }
+    if (request->hasParam("lonwestInput", true))
+    {
+        AsyncWebParameter *p = request->getParam("latwestInput", true);
+        if (p->value().compareTo("y"))
+        {
+            _mockData->isWest = true;
+        }
+    }
     Serial.println("Test Data Set");
     request->send(200);
 }

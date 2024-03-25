@@ -9,20 +9,23 @@ TestEngine::TestEngine(MockData *mockData, SeaTalk *seatalk)
 
 void TestEngine::processTest()
 {
-    if (millis() > _lastRun + 500)
+    if (millis() > _lastRun + 200)
     {
         sendApparentWind(_mockData->aws, _mockData->awa);
-        delay(random(2, 50));
+        delay(random(2, 100));
         sendSpeedThroughWater(_mockData->stw);
-        delay(random(2, 50));
+        delay(random(2, 100));
         sendSpeedOverGround(_mockData->sog);
-        delay(random(2, 50));
+        delay(random(2, 100));
         sendDepth(_mockData->dpt);
-        delay(random(2, 50));
+        delay(random(2, 100));
         sendHeading(_mockData->hdg);
-        delay(random(2, 50));
+        delay(random(2, 100));
         sendCourseOverGround(_mockData->cog);
-
+        delay(random(2, 100));
+        sendLat(_mockData->latdeg, _mockData->latmin, _mockData->isNorth);
+        delay(random(2, 100));
+        sendLat(_mockData->londeg, _mockData->lonmin, _mockData->isWest);
         _lastRun = millis();
         Serial.println("Test Run Processed");
     }
@@ -169,7 +172,51 @@ void TestEngine::sendCourseOverGround(double courseOverGround)
     // Mask off first 2 bits
     u_int8_t vw = segmentDegree & 0x3f;
     // Pack it up
-    uint8_t stcmd[5] = {0x53, u0, vw};
+    uint8_t stcmd[5] = {0x53, u0, vw, 0x00, 0x00};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 5);
+}
+
+/// @brief Send Lat
+/// @param latDeg Lat Degree
+/// @param latMin Lat Minute
+/// @param isSouth Is South
+void TestEngine::sendLat(double latDeg, double latMin, bool isNorth)
+{
+    u_int8_t xx = latDeg;
+    u_int16_t yyyy = (latMin * 100);
+    if (!isNorth)
+    {
+        yyyy = yyyy | 0x8000;
+    }
+    else
+    {
+        yyyy = yyyy & 0x7FFF;
+    }
+    u_int8_t y1 = (0xFF00 & yyyy) >> 8;
+    u_int8_t y2 = 0x00FF & yyyy;
+
+    uint8_t stcmd[5] = {0x50, 02, xx, y1, y2};
+}
+
+/// @brief Send Long
+/// @param lonDeg Lon degrees
+/// @param lonMin Lon minutes
+/// @param isEast is east
+void TestEngine::sendLon(double lonDeg, double lonMin, bool isWest)
+{
+    u_int8_t xx = lonDeg;
+    u_int16_t yyyy = (lonMin * 100);
+    if (!isWest)
+    {
+        yyyy = yyyy | 0x8000;
+    }
+    else
+    {
+        yyyy = yyyy & 0x7FFF;
+    }
+    u_int8_t y1 = (0xFF00 & yyyy) >> 8;
+    u_int8_t y2 = 0x00FF & yyyy;
+
+    uint8_t stcmd[5] = {0x51, 02, xx, y1, y2};
 }

@@ -7,7 +7,7 @@
 class TestEngine
 {
 public:
-  TestEngine(MockData *_mockData,SeaTalk *seatalk);
+  TestEngine(MockData *_mockData, SeaTalk *seatalk);
 
   void sendApparentWind(double windSpeed, double windAngle);
   void sendSpeedThroughWater(double speedThroughWater);
@@ -15,6 +15,8 @@ public:
   void sendDepth(double depth);
   void sendHeading(double heading);
   void sendCourseOverGround(double courseOverGround);
+  void sendLat(double latDeg, double latMin, bool isNorth);
+  void sendLon(double lonDeg, double lonMin, bool isWest);
   void processTest();
 
 private:

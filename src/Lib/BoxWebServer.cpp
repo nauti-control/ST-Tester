@@ -133,7 +133,7 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
     }
     if (request->hasParam("lonwestInput", true))
     {
-        AsyncWebParameter *p = request->getParam("latwestInput", true);
+        AsyncWebParameter *p = request->getParam("lonwestInput", true);
         if (p->value().compareTo("y"))
         {
             _mockData->isWest = true;

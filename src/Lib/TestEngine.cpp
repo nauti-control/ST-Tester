@@ -196,7 +196,7 @@ void TestEngine::sendLat(double latDeg, double latMin, bool isNorth)
     u_int8_t y1 = (0xFF00 & yyyy) >> 8;
     u_int8_t y2 = 0x00FF & yyyy;
 
-    uint8_t stcmd[5] = {0x50, 02, xx, y1, y2};
+    uint8_t stcmd[5] = {0x50, 0x02, xx, y1, y2};
 }
 
 /// @brief Send Long
@@ -218,5 +218,5 @@ void TestEngine::sendLon(double lonDeg, double lonMin, bool isWest)
     u_int8_t y1 = (0xFF00 & yyyy) >> 8;
     u_int8_t y2 = 0x00FF & yyyy;
 
-    uint8_t stcmd[5] = {0x51, 02, xx, y1, y2};
+    uint8_t stcmd[5] = {0x51, 0x02, xx, y1, y2};
 }

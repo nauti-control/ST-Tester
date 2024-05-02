@@ -9,7 +9,7 @@ TestEngine::TestEngine(MockData *mockData, SeaTalk *seatalk)
 
 void TestEngine::processTest()
 {
-    if (millis() > _lastRun + 200)
+    if (millis() > _lastRun + 500)
     {
         sendApparentWind(_mockData->aws, _mockData->awa);
         delay(random(2, 100));
@@ -144,11 +144,11 @@ void TestEngine::sendHeading(double heading)
     u_int8_t oddDegree = ((hdg % 90) % 2) == 1 ? 2 : 0;
 
     // Shift it All Across
-    u_int8_t u2 = (((((oddDegree << 2) & 0x3) | segment) << 4) & 0xf) | 0x2;
+    u_int8_t u2 = (((oddDegree << 6) & 0xC0) | ((segment << 4) & 0xF0)) | 0x2;
     // Mask off first 2 bits
     u_int8_t vw = segmentDegree & 0x3f;
     // Pack it up
-    uint8_t stcmd[5] = {0x89, u2, vw, 0x00, 0x00};
+    uint8_t stcmd[5] = {0x89, u2, vw, 0x00, 0x20};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 5);
 }
@@ -168,13 +168,13 @@ void TestEngine::sendCourseOverGround(double courseOverGround)
     u_int8_t oddDegree = ((cog % 90) % 2) == 1 ? 2 : 0;
 
     // Shift it All Across
-    u_int8_t u0 = (((((oddDegree << 2) & 0x3) | segment) << 4) & 0xf);
+    u_int8_t u0 = (((oddDegree << 6) & 0xC0) | ((segment << 4) & 0xF0));
     // Mask off first 2 bits
     u_int8_t vw = segmentDegree & 0x3f;
     // Pack it up
-    uint8_t stcmd[5] = {0x53, u0, vw, 0x00, 0x00};
+    uint8_t stcmd[3] = {0x53, u0, vw};
     // Ship it out.
-    _seaTalk->send2ST(stcmd, 5);
+    _seaTalk->send2ST(stcmd, 3);
 }
 
 /// @brief Send Lat
@@ -183,6 +183,9 @@ void TestEngine::sendCourseOverGround(double courseOverGround)
 /// @param isSouth Is South
 void TestEngine::sendLat(double latDeg, double latMin, bool isNorth)
 {
+    Serial.println("Lat=");
+    Serial.println(latDeg);
+    Serial.println(latMin);
     u_int8_t xx = latDeg;
     u_int16_t yyyy = (latMin * 100);
     if (!isNorth)
@@ -197,6 +200,8 @@ void TestEngine::sendLat(double latDeg, double latMin, bool isNorth)
     u_int8_t y2 = 0x00FF & yyyy;
 
     uint8_t stcmd[5] = {0x50, 0x02, xx, y1, y2};
+    // Ship it out.
+    _seaTalk->send2ST(stcmd, 5);
 }
 
 /// @brief Send Long
@@ -205,6 +210,9 @@ void TestEngine::sendLat(double latDeg, double latMin, bool isNorth)
 /// @param isEast is east
 void TestEngine::sendLon(double lonDeg, double lonMin, bool isWest)
 {
+    Serial.println("Lon=");
+    Serial.println(lonDeg);
+    Serial.println(lonMin);
     u_int8_t xx = lonDeg;
     u_int16_t yyyy = (lonMin * 100);
     if (!isWest)
@@ -219,4 +227,6 @@ void TestEngine::sendLon(double lonDeg, double lonMin, bool isWest)
     u_int8_t y2 = 0x00FF & yyyy;
 
     uint8_t stcmd[5] = {0x51, 0x02, xx, y1, y2};
+    // Ship it out.
+    _seaTalk->send2ST(stcmd, 5);
 }

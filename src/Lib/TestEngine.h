@@ -18,6 +18,7 @@ public:
   void sendLat(double latDeg, double latMin, bool isNorth);
   void sendLon(double lonDeg, double lonMin, bool isWest);
   void processTest();
+  void sendLatLonUnfiltered(double latDeg,double latMin,bool isNorth,double lonDeg, double lonMin,bool isWest);
 
 private:
   SeaTalk *_seaTalk;

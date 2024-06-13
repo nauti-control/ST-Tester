@@ -26,6 +26,9 @@ void TestEngine::processTest()
         sendLat(_mockData->latdeg, _mockData->latmin, _mockData->isNorth);
         delay(random(2, 100));
         sendLat(_mockData->londeg, _mockData->lonmin, _mockData->isWest);
+
+        delay(random(2, 100));
+        sendLatLonUnfiltered(_mockData->latdeg, _mockData->latmin, _mockData->isNorth, _mockData->londeg, _mockData->lonmin, _mockData->isWest);
         _lastRun = millis();
         Serial.println("Test Run Processed");
     }
@@ -229,4 +232,38 @@ void TestEngine::sendLon(double lonDeg, double lonMin, bool isWest)
     uint8_t stcmd[5] = {0x51, 0x02, xx, y1, y2};
     // Ship it out.
     _seaTalk->send2ST(stcmd, 5);
+}
+
+/// @brief Send Lat Lon Unfiliterd
+/// @param latDeg
+/// @param latMin
+/// @param isNorth
+/// @param lonDeg
+/// @param lonMin
+/// @param isWest
+void TestEngine::sendLatLonUnfiltered(double latDeg, double latMin, bool isNorth, double lonDeg, double lonMin, bool isWest)
+{
+
+    u_int8_t la = latDeg;
+    u_int8_t lo = lonDeg;
+    u_int8_t lat = (latDeg * 1000);
+    u_int8_t lon = (lonDeg * 1000);
+    u_int8_t xx = lat / 256;
+    u_int8_t yy = lat % 256;
+    u_int8_t qq = lon / 256;
+    u_int8_t rr = lon % 256;
+    u_int8_t z = 0;
+    if (!isNorth)
+    {
+        z = z | 1;
+    }
+    if (!isWest)
+    {
+        z = z | 2;
+    }
+    u_int8_t z5 = (z << 4) | 5;
+
+    uint8_t stcmd[8] = {0x58, z5, la, xx, yy, lo, qq, rr};
+    // Ship it out.
+    _seaTalk->send2ST(stcmd, 8);
 }

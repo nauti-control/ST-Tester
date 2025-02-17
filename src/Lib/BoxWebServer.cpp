@@ -139,6 +139,38 @@ void BoxWebServer::SetTestData(AsyncWebServerRequest *request)
             _mockData->isWest = true;
         }
     }
+
+    if (request->hasParam("crossTrack", true))
+    {
+        AsyncWebParameter *p = request->getParam("crossTrack", true);
+        _mockData->crossTrack = p->value().toDouble();
+        Serial.println("crossTrack=");
+        Serial.println(_mockData->crossTrack);
+    }
+
+    if (request->hasParam("destBearing", true))
+    {
+        AsyncWebParameter *p = request->getParam("destBearing", true);
+        _mockData->destBearing = p->value().toDouble();
+        Serial.println("destBearing=");
+        Serial.println(_mockData->destBearing);
+    }
+
+    if (request->hasParam("destRange", true))
+    {
+        AsyncWebParameter *p = request->getParam("destRange", true);
+        _mockData->destRange = p->value().toDouble();
+        Serial.println("destRange=");
+        Serial.println(_mockData->destRange);
+    }
+
+    if (request->hasParam("steerDirection", true))
+    {
+        AsyncWebParameter *p = request->getParam("steerDirection", true);
+        _mockData->steerDirection = p->value();
+        Serial.println("Steer Direction=");
+        Serial.println(_mockData->steerDirection);
+    }
     Serial.println("Test Data Set");
     request->send(200);
 }

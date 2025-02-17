@@ -18,7 +18,8 @@ public:
   void sendLat(double latDeg, double latMin, bool isNorth);
   void sendLon(double lonDeg, double lonMin, bool isWest);
   void processTest();
-  void sendLatLonUnfiltered(double latDeg,double latMin,bool isNorth,double lonDeg, double lonMin,bool isWest);
+  void sendLatLonUnfiltered(double latDeg, double latMin, bool isNorth, double lonDeg, double lonMin, bool isWest);
+  void sendNavToWaypointInfo(double crossTrack, double destBearing, double destRange, String steerDirection);
 
 private:
   SeaTalk *_seaTalk;

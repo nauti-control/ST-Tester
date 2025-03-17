@@ -302,7 +302,7 @@ void TestEngine::sendNavToWaypointInfo(double crossTrack, double destBearing, do
 
     if (steerDirection == "RIGHT")
     {
-        y = y & 4;
+        y = y | 4;
     }
 
     u_int8_t f;

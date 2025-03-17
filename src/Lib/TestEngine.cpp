@@ -280,9 +280,9 @@ void TestEngine::sendLatLonUnfiltered(double latDeg, double latMin, bool isNorth
 void TestEngine::sendNavToWaypointInfo(double crossTrack, double destBearing, double destRange, String steerDirection)
 {
     steerDirection.toUpperCase();
-    u_int16_t xxxx = crossTrack * 100;
-    u_int8_t x6 = (((xxxx >> 4) & 0x00F0) | 0x0006);
-    u_int8_t xx = (xxxx & 0x00FF);
+    u_int16_t xxx = crossTrack * 100;
+    u_int8_t x6 = (((xxx<<4) & 0x00F0) | 0x0006);
+    u_int8_t xx = ((xxx>>4) & 0x00FF);
     u_int8_t u = destBearing / 90;
     u_int8_t segmentDegree = (u % 90) / 2;
     u_int8_t vu = ((segmentDegree << 4) & 0xFF00) | (u & 0x00FF);
@@ -294,7 +294,7 @@ void TestEngine::sendNavToWaypointInfo(double crossTrack, double destBearing, do
         zzz = destRange * 10;
         y = 0;
     }
-    else
+    else if (destRange>=0)
     {
         zzz = destRange * 100;
         y = 1;

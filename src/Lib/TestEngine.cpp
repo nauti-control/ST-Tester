@@ -30,8 +30,8 @@ void TestEngine::processTest()
         delay(random(2, 100));
         sendLatLonUnfiltered(_mockData->latdeg, _mockData->latmin, _mockData->isNorth, _mockData->londeg, _mockData->lonmin, _mockData->isWest);
 
-        delay(random(2,100));
-        sendNavToWaypointInfo(_mockData->crossTrack,_mockData->destBearing,_mockData->destRange,_mockData->steerDirection);
+        delay(random(2, 100));
+        sendNavToWaypointInfo(_mockData->crossTrack, _mockData->destBearing, _mockData->destRange, _mockData->steerDirection);
         _lastRun = millis();
         Serial.println("Test Run Processed");
     }
@@ -271,7 +271,6 @@ void TestEngine::sendLatLonUnfiltered(double latDeg, double latMin, bool isNorth
     _seaTalk->send2ST(stcmd, 8);
 }
 
-
 /// @brief Send Nav To Waypoint Info
 /// @param crossTrack Cross Track
 /// @param destBearing Dest BEaring
@@ -281,11 +280,14 @@ void TestEngine::sendNavToWaypointInfo(double crossTrack, double destBearing, do
 {
     steerDirection.toUpperCase();
     u_int16_t xxx = crossTrack * 100;
-    u_int8_t x6 = (((xxx<<4) & 0x00F0) | 0x0006);
-    u_int8_t xx = ((xxx>>4) & 0x00FF);
-    u_int8_t u = destBearing / 90;
-    u_int8_t segmentDegree = (u % 90) / 2;
-    u_int8_t vu = ((segmentDegree << 4) & 0xFF00) | (u & 0x00FF);
+    u_int8_t x6 = (((xxx << 4) & 0x00F0) | 0x0006);
+    u_int8_t xx = ((xxx >> 4) & 0x00FF);
+    u_int16_t bearing = destBearing;
+    u_int8_t segment = bearing / 90;
+    u_int8_t segmentDegree = (bearing % 90) * 2;
+    u_int8_t u = segment & 0x03;
+    u_int8_t w =(segmentDegree>>4) & 0X0F;
+    u_int8_t v = (segmentDegree & 0X0F);
 
     u_int16_t zzz;
     u_int8_t y;
@@ -294,7 +296,7 @@ void TestEngine::sendNavToWaypointInfo(double crossTrack, double destBearing, do
         zzz = destRange * 10;
         y = 0;
     }
-    else if (destRange>=0)
+    else if (destRange >= 0)
     {
         zzz = destRange * 100;
         y = 1;
@@ -315,15 +317,17 @@ void TestEngine::sendNavToWaypointInfo(double crossTrack, double destBearing, do
         f = 7;
     }
 
-    u_int8_t zw = (zzz & 0x000F) << 4;
+    u_int8_t zw = ((zzz & 0x000F) << 4) | w;
 
-    u_int8_t zz = (zzz & 0x0FF0) >> 4;
+    u_int8_t zz = ((zzz & 0x0FF0) >> 4);
 
     u_int8_t yf = ((y << 4) & 0xF0) | f;
+
+    u_int8_t vu= (v<<4) | u;
 
     // Pack it up
     uint8_t stcmd[9] = {0x85, x6, xx, vu, zw, zz, yf, 00, 00};
     // Ship it out.
-  
+
     _seaTalk->send2ST(stcmd, 9);
 }

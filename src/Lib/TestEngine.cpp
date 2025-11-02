@@ -1,4 +1,5 @@
 #include "TestEngine.h"
+#include <cmath>
 
 TestEngine::TestEngine(MockData *mockData, SeaTalk *seatalk)
 {
@@ -38,19 +39,17 @@ void TestEngine::processTest()
 }
 
 /// @brief Send Depth
-/// @param depth
+/// @param depth Depth in feet
 void TestEngine::sendDepth(double depth)
 {
     Serial.println("Depth=");
     Serial.println(depth);
-    u_int16_t dpt = depth * 10;
+    // Protocol expects depth in tenths of feet - use rounding instead of truncation for better accuracy
+    u_int16_t dpt = (u_int16_t)depth * 10.0;
     u_int8_t x1 = (0xFF00 & dpt) >> 8;
     Serial.println(x1);
     u_int8_t x2 = 0x00FF & dpt;
     Serial.println(x2);
-    u_int8_t y1 = 4 << 4 & 0xff00;
-    Serial.println(y1);
-    // Showing 256 Feet
 
     // Pack it up
     uint8_t stcmd[5] = {0x00, 0x02, 0x00, x2, x1};
@@ -84,7 +83,7 @@ void TestEngine::sendApparentWind(double windSpeed, double windAngle)
     // Ensure only using 7 bits. keep 8th bit clear to signify knots.
     if (x2 > 127)
     {
-        x2 == 127;
+        x2 = 127;
     }
 
     // Fractions would be stored here but dropping
